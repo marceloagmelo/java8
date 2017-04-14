@@ -6,7 +6,7 @@ All the componentes (Java process and Prometheus Agent) write logs entries to th
 
 ### How to download the image
 
-docker pull registry.lvtc.gsnet.corp/produban-br/java8:1.0.4
+docker pull marceloagmelo/java8:latest
 
 ### How to use image
 
@@ -14,7 +14,7 @@ The image contains a control.sh script, this script has several operations.
 
 #### Help
 
-docker run --rm -ti registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 help
+docker run --rm -ti marceloagmelo/java8:latest help
 ```
 ========================================
 USAGE: /control.sh COMMAND [args]
@@ -33,7 +33,7 @@ USAGE: /control.sh COMMAND [args]
 
 The info operation shows only image's metadafa information.
 
-docker run --rm -ti registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 info
+docker run --rm -ti marceloagmelo/java8:latest info
 ```
 com.produban.components=java8, prometheus
 com.produban.description=Java 8 runtime for Spring boot microservices
@@ -44,7 +44,7 @@ com.produban.imageowner=Products and Services
 
 The status operation shows information about the running proccess
 
-docker run --rm -ti registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 status
+docker run --rm -ti marceloagmelo/java8:latest status
 ```
 top - 07:56:33 up 10 days,  5:29,  0 users,  load average: 0.43, 0.42, 0.41
 Tasks:   2 total,   1 running,   1 sleeping,   0 stopped,   0 zombie
@@ -60,7 +60,7 @@ KiB Swap:  8265724 total,  4965660 free,  3300064 used.  1416092 avail Mem
 
 The start operation initialize the java process, by default the start script looks for JAR files inside /opt/app directory, the first JAR file found will be used as the application, if no JAR files are found the start operation will use the default Spring Boot application /application.jar, this application can be used for testing.
 ```
-docker run -d -p 0.0.0.0:8080:8080 registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 start
+docker run -d -p 0.0.0.0:8080:8080 marceloagmelo/java8:latest start
 ```
 
 In this example the default application is executed.
@@ -71,7 +71,7 @@ In this example the default application is executed.
 
 This operation starts the /bin/bash shell
 ```
-docker run --rm -ti registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 shell
+docker run --rm -ti marceloagmelo/java8:latest shell
 ```
 
 #### Environment Variables
@@ -80,7 +80,7 @@ JAVA_OPTS_EXT
 
 Use this variable to add new parameters o properties to the java runtime process.
 ```
-docker run -e JAVA_OPTS_EXT="-Dapp.title=Test -Xms256M" -d -p 8080:8080 registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 start
+docker run -e JAVA_OPTS_EXT="-Dapp.title=Test -Xms256M" -d -p 8080:8080 marceloagmelo/java8:latest start
 ```
 
 In this example we configure the initial heap size to 256MB also we add a java property called "app.title".
@@ -106,33 +106,11 @@ PBD_URL
 This docker image is able to download an pbd file from any https/http web server, the articaft can be zip/tgz.
 
 ```
-docker run -e JAR_PATH="/opt/app/vivaFluminense.jar" -d -p 8080:8080 registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 start
+docker run -e JAR_PATH="/opt/app/vivaFluminense.jar" -d -p 8080:8080 marceloagmelo/java8:latest start
 ```
 
 ```
-docker run -ti --rm --env ARTIFACT_URL=http://192.168.1.39:8383/application.jar registry.lvtc.gsnet.corp/produban-br/java8:1.0.4
-```
-> NOTE: Please, pay attention to the file formats supported by this image since it will fail in another case
-
-### Memory considerations when running inside Openshift
-
-This image start Java processes by doing a precalculation of parameters based on total memory of the container.
-It gives:
-
-- 70 % for java heap (-Xmx)
-- 15 % for java Metaspace (-XX:MaxMetaspaceSize)
-of total memory assigned to the container
-
-So, if your set your pod with maximum memory of 1024m you will get:
-
-```
--XX:MaxMetaspaceSize=165564K -Xmx772634K
-```
-
-It is not needed to specify -Xmx parameters in JVM_OPTIONS environment variable of OSE template, BUT when using the image in a local environment it is needed to set a limit for javase containers with *-m*
-
-```
-docker run -it -p 8080:8080 -m 512m registry.lvtc.gsnet.corp/produban-br/java8:1.0.4
+docker run -it -p 8080:8080 -m 512m marceloagmelo/java8:latest
 ```
 
 APP_NAME
@@ -146,12 +124,12 @@ It is just a label used for grouping prometheus agents, in OpenShift this label 
 
 ## How to create new images from Java imagen
 
-In this example we will create new SpringBoot application using registry.lvtc.gsnet.corp/produban-br/java8:1.0.4 as the base image.
+In this example we will create new SpringBoot application using marceloagmelo/java8:latest as the base image.
 
 Dockerfile
 
 ```
-FROM registry.lvtc.gsnet.corp/produban-br/java8:1.0.4
+FROM marceloagmelo/java8:latest
 ADD configuration.jar /opt/app
 ADD mykey.key /opt/app
 ADD mycert.crt /opt/app
