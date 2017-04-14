@@ -43,11 +43,11 @@ ENV LD_LIBRARY_PATH /lib-override
 LABEL com.produban.imageowner="Products and Services" \
       com.produban.description="Java 8 runtime for Spring boot microservices" \
       com.produban.components="java8" \
-      com.prpoduban.image="marceloagmelo/java8:1.0.0"
+      com.prpoduban.image="marceloagmelo/java8:latest"
 ENV com.produban.imageowner="Products and Services" \
     com.produban.description="Java 8 runtime for Spring boot microservices" \
     com.produban.components="java8" \
-    com.prpoduban.image="marceloagmelo/java8:1.0.0"
+    com.prpoduban.image="marceloagmelo/java8:latest"
 
 USER 20000
 WORKDIR $IMAGE_SCRIPTS_HOME
