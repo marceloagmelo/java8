@@ -1,7 +1,5 @@
 FROM marceloagmelo/centos7:latest
 
-MAINTAINER Marcelo Melo <mmelo@produban.com.br>
-
 ADD application.jar /
 
 ENV JAVA_VERSION 1.8.0
@@ -36,18 +34,6 @@ RUN cp /etc/hosts /tmp/hosts && \
     chmod 755 /tmp/hosts && \
     chown java:java /tmp/hosts
 ENV LD_LIBRARY_PATH /lib-override
-
-#######################################################################
-##### We have to expose image metada as label and ENV
-#######################################################################
-LABEL com.produban.imageowner="Products and Services" \
-      com.produban.description="Java 8 runtime for Spring boot microservices" \
-      com.produban.components="java8" \
-      com.prpoduban.image="marceloagmelo/java8:latest"
-ENV com.produban.imageowner="Products and Services" \
-    com.produban.description="Java 8 runtime for Spring boot microservices" \
-    com.produban.components="java8" \
-    com.prpoduban.image="marceloagmelo/java8:latest"
 
 USER 20000
 WORKDIR $IMAGE_SCRIPTS_HOME
